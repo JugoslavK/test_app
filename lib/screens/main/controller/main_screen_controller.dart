@@ -5,24 +5,32 @@ import 'package:get/get.dart';
 import 'package:test_app/components/databse/moor_database.dart';
 import 'package:test_app/components/httpRequest/api_calls.dart';
 import 'package:test_app/components/models/item_model.dart';
-import 'package:test_app/components/models/object_model.dart';
 import 'package:test_app/constant.dart';
 
 import '../../../env.dart';
 
+/// Main screen controller
 class MainScreenController extends SuperController {
+  ///List of items models
   List<ItemModel> listItems = <ItemModel>[].obs;
+
+  /// List of items models to show
   List<ItemModel> listItemsShow = <ItemModel>[].obs;
-  Rx<ObjectModel> objectModel = ObjectModel().obs;
+
+  /// List of column names
   List<String> listColumnsNames = <String>[].obs;
 
   /// Scroll controller
   final ScrollController scrollController = ScrollController();
 
+  /// App database
   final database = AppDatabase();
 
+  /// From element to element to show as pagination.
   int from = 0;
   int to = 20;
+
+  /// Loading and loading more boolean
   var isLoading = true.obs;
   var isLoadingMore = false.obs;
 
@@ -45,6 +53,7 @@ class MainScreenController extends SuperController {
     getDataApi();
   }
 
+  /// On pull to refresh data
   onRefresh() {
     isLoadingMore.value = true;
     from = 0;
@@ -52,6 +61,7 @@ class MainScreenController extends SuperController {
     getDataApi();
   }
 
+  /// On click cell open dialog with data
   openDialog(String data, BuildContext context) {
     showPlatformDialog(
       context: context,
@@ -70,6 +80,7 @@ class MainScreenController extends SuperController {
     );
   }
 
+  /// Get data from api if there is internet or get data from database
   getDataApi() async {
     isLoading.value = true;
     checkInternet().then((connectivityResult) async {
@@ -85,10 +96,8 @@ class MainScreenController extends SuperController {
               .toList();
           getDataReady();
           setUpDataToDatabase();
-          objectModel.value;
         } else {
           Get.snackbar('Error', 'Error');
-          objectModel.value;
           isLoading.value = false;
         }
       } else {
@@ -98,10 +107,12 @@ class MainScreenController extends SuperController {
     });
   }
 
+  /// Check internet connection
   Future<ConnectivityResult> checkInternet() async {
     return (Connectivity().checkConnectivity());
   }
 
+  /// Setup the database and insert all the data
   setUpDataToDatabase() {
     for (int i = 0; i < listColumnsNames.length; i++) {
       database.insertTitleData(NameColumns(name: listColumnsNames[i]));
@@ -116,6 +127,7 @@ class MainScreenController extends SuperController {
     }
   }
 
+  /// Get data from database
   getDataFromDatabase() {
     listItems.clear();
     listColumnsNames.clear();
@@ -132,6 +144,7 @@ class MainScreenController extends SuperController {
     });
   }
 
+  /// Set data ready - columns values
   getDataReady() {
     if (listItems.isNotEmpty) {
       listItems[0].toJson().forEach((key, value) {
@@ -142,6 +155,7 @@ class MainScreenController extends SuperController {
     setListValue();
   }
 
+  /// Set data - row data
   setListValue() {
     if (listItems.isNotEmpty) {
       for (from; from < to; from++) {

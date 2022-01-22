@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_app/screens/main/controller/main_screen_controller.dart';
 
+/// Main screen view
 class MainScreenView extends StatelessWidget {
   final MainScreenController _mainScreenController =
       Get.put(MainScreenController());
@@ -20,6 +21,7 @@ class MainScreenView extends StatelessWidget {
             child: Obx(() {
               return Column(
                 children: [
+                  /// If value is loading from api or from database set loading.
                   if (_mainScreenController.isLoading.value) ...{
                     const Center(
                       child: SizedBox(
@@ -29,6 +31,7 @@ class MainScreenView extends StatelessWidget {
                       ),
                     )
                   } else ...{
+                    /// If first time app is up with no internet before database is setup show no data with button and wait internet.
                     if (_mainScreenController.listItems.isEmpty) ...{
                       Center(
                         child: ClipRRect(
@@ -63,6 +66,7 @@ class MainScreenView extends StatelessWidget {
                         ),
                       )
                     } else ...{
+                      /// Show table with data
                       Padding(
                         padding: const EdgeInsets.only(right: 25),
                         child: DataTable(
