@@ -47,7 +47,7 @@ final Dio dio = Dio()
 class ApiCalls {
   const ApiCalls();
 
-  /// GET api call
+  /// GET api call with query params
   // Future<dynamic> get(String uri, bool isOldBaseUrl) async {
   Future<dynamic> get(String uri, Map<String, dynamic>? queryParameters) async {
     // if (!isOldBaseUrl) {
@@ -60,7 +60,7 @@ class ApiCalls {
     return response;
   }
 
-  /// POST api call
+  /// POST api call with dynamic data
   // Future<dynamic> post(String uri, dynamic data, bool isOldBaseUrl) async {
   Future<dynamic> post(String uri, dynamic data) async {
     // if (!isOldBaseUrl) {

@@ -6,6 +6,7 @@ import 'package:test_app/screens/main/view/main_screen_view.dart';
 import 'env.dart';
 import 'logger/logger_utils.dart';
 
+/// Main dev version
 Future<void> main() async {
   setEnvironment(Environment.dev);
   runApp(MyApp());

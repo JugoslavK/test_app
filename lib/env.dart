@@ -1,3 +1,4 @@
+/// Base url for environments
 const _baseUrl = "baseUrl";
 
 enum Environment { dev, stage, prod }
